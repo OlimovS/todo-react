@@ -4,6 +4,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import Badge from '@material-ui/core/Badge';
 
 import Todos from '../Todos/Todos.js';
 
@@ -62,7 +63,14 @@ function ResponsiveDrawer(props) {
           </ListItem>
           <Divider />
           <ListItem button>
-            <ListItemIcon> <FormatListNumberedIcon /> </ListItemIcon>
+            <ListItemIcon>
+
+
+            <Badge badgeContent={4} color="secondary">
+              <FormatListNumberedIcon />
+            </Badge>
+
+            </ListItemIcon>
             <ListItemText primary={'Todos'} />
           </ListItem>
       </List>
