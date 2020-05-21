@@ -6,7 +6,7 @@ import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Badge from '@material-ui/core/Badge';
 import { connect } from 'react-redux';
-import { Route, Switch, Redirect, BrowserRouter, Link } from 'react-router-dom';
+import { Route, Switch, Redirect,  Link } from 'react-router-dom';
 import Todos from '../Todos/Todos.js';
 
 const drawerWidth = 240;
