@@ -11,22 +11,25 @@ import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 
 import * as actions from '../../store/actions/index.js';
 import MakeTodo from '../MakeTodo/MakeTodo.js';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   thead: {
-    fontWeight: 'bold'
+    fontWeight: 'bolder'
   },
-});
+  tcell: {
+    padding: theme.spacing(1),
+  },
+}));
 
 
 function Todos (props) {
 
-
+    const theme = useTheme();
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const handleClickOpen = () => {
@@ -53,7 +56,7 @@ function Todos (props) {
       <Fragment>
           <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: 10}}>
           <Typography variant='h4'>
-           Todo List
+           My Todo List
           </Typography>
           <Button variant="contained" color="secondary" onClick={handleClickOpen}>
             ADD TODO
@@ -68,8 +71,8 @@ function Todos (props) {
             <Table aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell className={classes.thead}>Completed</TableCell>
-                  <TableCell className={classes.thead}>Todo</TableCell>
+                  <TableCell className={classes.thead}>Done</TableCell>
+                  <TableCell className={classes.thead}>Todo List Items</TableCell>
                   <TableCell className={classes.thead}>Delete</TableCell>
                 </TableRow>
               </TableHead>
@@ -77,7 +80,7 @@ function Todos (props) {
 
                   {props.todos.map(todo => (
                     <TableRow key={`${todo.id}`}>
-                        <TableCell>
+                        <TableCell className={classes.tcell}>
                             <Checkbox
                                 onChange={() => checkboxHandler(todo.id)}
                                 checked={todo.checked}
@@ -85,8 +88,8 @@ function Todos (props) {
                                 inputProps={{ 'aria-label': 'secondary checkbox' }}
                               />
                         </TableCell>
-                        <TableCell>{todo.text}</TableCell>
-                        <TableCell>
+                        <TableCell className={classes.tcell}>{todo.text}</TableCell>
+                        <TableCell className={classes.tcell}>
                            <IconButton onClick={() => deleteTodoHandler(todo.id)}>
                               <DeleteIcon />
                            </IconButton>

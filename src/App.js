@@ -1,11 +1,14 @@
 import React, { Fragment } from 'react';
 import Header from './components/Header/Header.js';
+import { Route, Switch, Redirect, BrowserRouter } from 'react-router-dom';
 
 
 function App() {
   return (
     <Fragment>
-       <Header />
+     <BrowserRouter>
+           <Route path='/' component={Header}/>
+     </BrowserRouter>
     </Fragment>
   );
 }

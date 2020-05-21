@@ -1,12 +1,12 @@
 import React from 'react';
-import{ AppBar, CssBaseline, Drawer, Hidden, IconButton, List, ListItem, ListItemIcon, ListItemText, Toolbar, Typography, Divider }from '@material-ui/core';
+import{ AppBar, CssBaseline, Drawer, Hidden, IconButton, ListItemText, MenuItem, ListItemIcon, MenuList, Toolbar, Typography, Divider }from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Badge from '@material-ui/core/Badge';
 import { connect } from 'react-redux';
-
+import { Route, Switch, Redirect, BrowserRouter, Link } from 'react-router-dom';
 import Todos from '../Todos/Todos.js';
 
 const drawerWidth = 240;
@@ -41,9 +41,14 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
     paddingTop: theme.mixins.toolbar.minHeight + 40,
-    maxWidth: 880,
+    maxWidth: 920,
     margin: '0 auto',
+    textAlign: 'center',
   },
+  menuitem: {
+    padding: theme.spacing(1),
+    paddingLeft: theme.spacing(2),
+  }
 }));
 
 function ResponsiveDrawer(props) {
@@ -55,32 +60,29 @@ function ResponsiveDrawer(props) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-//  [{checked: true, text: "Type some text", id: "1"}, {checked: true, text: "", id: ",Thu May 21 2020 15:51:12 GMT+0500 (Uzbekistan Standard Time),0.07519686896426125"},{checked: true, text: "", id: ",Thu May 21 2020 15:51:16 GMT+0500 (Uzbekistan Standard Time),0.5463687590606925"}]
-
-
+  var fun = (sum, obj) => {
+     let n = obj.checked ? 0 : 1;
+     return sum + n;
+   }
+  var number = props.todos.reduce(fun , 0);
   const drawer = (
-      <List>
-          <ListItem button onClick={() => console.log('hello Home clicked')}>
-            <ListItemIcon> <HomeIcon /> </ListItemIcon>
-            <ListItemText primary={'Home'} />
-          </ListItem>
-          <Divider />
-          <ListItem button>
-            <ListItemIcon>
-
-
-          <Badge
-             badgeContent={props.todos.reduce( (sum, obj) => {
-                                                   let n = obj.checked ? 0 : 1;
-                                                   return sum + n;
-                                               }, 0)} color="secondary">
-              <FormatListNumberedIcon />
-            </Badge>
-
-            </ListItemIcon>
-            <ListItemText primary={'Todos'} />
-          </ListItem>
-      </List>
+    <MenuList style={{outline: 'none'}}>
+       <MenuItem component={Link} to={'/home'} className={classes.menuitem}>
+          <ListItemIcon>
+            <HomeIcon />
+          </ListItemIcon>
+          <ListItemText primary={'Home'} />
+       </MenuItem>
+       <Divider />
+       <MenuItem component={Link} to={'/todos'} className={classes.menuitem}>
+          <ListItemIcon>
+            <Badge badgeContent={number} color="secondary">
+                <FormatListNumberedIcon />
+              </Badge>
+          </ListItemIcon>
+          <ListItemText primary={'Todos'} />
+       </MenuItem>
+    </MenuList>
   );
 
   const container = window !== undefined ? () => window().document.body : undefined;
@@ -137,13 +139,22 @@ function ResponsiveDrawer(props) {
 
       </nav>
       <main className={classes.content}>
-          <Todos />
+
+          <Switch>
+            <Route path='/todos' component={Todos}/>
+            <Route path='/home' render={() => (
+              <Typography variant="h5" style={{margin: '0 auto'}}>
+                Welcome to "TODO" web app!
+              </Typography>
+            )}/>
+            <Redirect to='/home' />
+          </Switch>
+
+
       </main>
     </div>
   );
 }
-
-
 
 const mapStateToProps = state => {
   return {
