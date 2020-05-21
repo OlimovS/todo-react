@@ -12,6 +12,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { makeStyles } from '@material-ui/core/styles';
 
+import MakeTodo from '../MakeTodo/MakeTodo.js';
+
 const useStyles = makeStyles({
   thead: {
     fontWeight: 'bold',
@@ -19,6 +21,19 @@ const useStyles = makeStyles({
 });
 export default function SimpleTable(styleProp) {
   const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleCloseButton = (text) => {
+    setOpen(false);
+    console.log(text);
+  }
 
   return (
     <Fragment>
@@ -26,11 +41,15 @@ export default function SimpleTable(styleProp) {
         <Typography variant='h4'>
          Todo List
         </Typography>
-        <Button variant="contained" color="secondary">
+        <Button variant="contained" color="secondary" onClick={handleClickOpen}>
           ADD TODO
         </Button>
         </div>
-
+        <MakeTodo
+            open={open}
+            handleClose={handleClose}
+            handleCloseButton={handleCloseButton}
+            />
         <TableContainer component={Paper}>
           <Table aria-label="simple table">
             <TableHead>
