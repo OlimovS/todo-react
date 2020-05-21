@@ -22,79 +22,82 @@ const useStyles = makeStyles({
     fontWeight: 'bold'
   },
 });
-function Todos(props) {
-  const classes = useStyles();
-  const [open, setOpen] = useState(false);
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
 
-  const handleCloseButton = (text) => {
-    setOpen(false);
-    console.log(text);
-    props.onTodoAdd(text);
-  }
+function Todos (props) {
 
-  const checkboxHandler = (id) => {
-    props.onCheckTodo(id);
-  }
 
-  const deleteTodoHandler = (id) => {
-    props.onDeleteTodo(id)
-  }
-  return (
-    <Fragment>
-        <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: 10}}>
-        <Typography variant='h4'>
-         Todo List
-        </Typography>
-        <Button variant="contained" color="secondary" onClick={handleClickOpen}>
-          ADD TODO
-        </Button>
-        </div>
-        <MakeTodo
-            open={open}
-            handleClose={handleClose}
-            handleCloseButton={handleCloseButton}
-            />
-        <TableContainer component={Paper}>
-          <Table aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell className={classes.thead}>Completed</TableCell>
-                <TableCell className={classes.thead}>Todo</TableCell>
-                <TableCell className={classes.thead}>Delete</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
+    const classes = useStyles();
+    const [open, setOpen] = useState(false);
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
 
-                {props.todos.map(todo => (
-                  <TableRow key={`${todo.id}`}>
-                      <TableCell>
-                          <Checkbox
-                              onChange={() => checkboxHandler(todo.id)}
-                              checked={todo.checked}
-                              color="primary"
-                              inputProps={{ 'aria-label': 'secondary checkbox' }}
-                            />
-                      </TableCell>
-                      <TableCell>{todo.text}</TableCell>
-                      <TableCell>
-                         <IconButton onClick={() => deleteTodoHandler(todo.id)}>
-                            <DeleteIcon />
-                         </IconButton>
-                      </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-    </Fragment>
-  );
+    const handleClose = () => {
+      setOpen(false);
+    };
+
+    const handleCloseButton = (text) => {
+      setOpen(false);
+      props.onTodoAdd(text);
+    }
+
+    const checkboxHandler = (id) => {
+      props.onCheckTodo(id);
+    }
+
+    const deleteTodoHandler = (id) => {
+      props.onDeleteTodo(id)
+    }
+    return (
+      <Fragment>
+          <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: 10}}>
+          <Typography variant='h4'>
+           Todo List
+          </Typography>
+          <Button variant="contained" color="secondary" onClick={handleClickOpen}>
+            ADD TODO
+          </Button>
+          </div>
+          <MakeTodo
+              open={open}
+              handleClose={handleClose}
+              handleCloseButton={handleCloseButton}
+              />
+          <TableContainer component={Paper}>
+            <Table aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell className={classes.thead}>Completed</TableCell>
+                  <TableCell className={classes.thead}>Todo</TableCell>
+                  <TableCell className={classes.thead}>Delete</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+
+                  {props.todos.map(todo => (
+                    <TableRow key={`${todo.id}`}>
+                        <TableCell>
+                            <Checkbox
+                                onChange={() => checkboxHandler(todo.id)}
+                                checked={todo.checked}
+                                color="primary"
+                                inputProps={{ 'aria-label': 'secondary checkbox' }}
+                              />
+                        </TableCell>
+                        <TableCell>{todo.text}</TableCell>
+                        <TableCell>
+                           <IconButton onClick={() => deleteTodoHandler(todo.id)}>
+                              <DeleteIcon />
+                           </IconButton>
+                        </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+      </Fragment>
+    );
 }
 
 const mapStateToProps = state => {

@@ -5,6 +5,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Badge from '@material-ui/core/Badge';
+import { connect } from 'react-redux';
 
 import Todos from '../Todos/Todos.js';
 
@@ -54,6 +55,8 @@ function ResponsiveDrawer(props) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+//  [{checked: true, text: "Type some text", id: "1"}, {checked: true, text: "", id: ",Thu May 21 2020 15:51:12 GMT+0500 (Uzbekistan Standard Time),0.07519686896426125"},{checked: true, text: "", id: ",Thu May 21 2020 15:51:16 GMT+0500 (Uzbekistan Standard Time),0.5463687590606925"}]
+
 
   const drawer = (
       <List>
@@ -66,7 +69,11 @@ function ResponsiveDrawer(props) {
             <ListItemIcon>
 
 
-            <Badge badgeContent={4} color="secondary">
+          <Badge
+             badgeContent={props.todos.reduce( (sum, obj) => {
+                                                   let n = obj.checked ? 0 : 1;
+                                                   return sum + n;
+                                               }, 0)} color="secondary">
               <FormatListNumberedIcon />
             </Badge>
 
@@ -136,4 +143,12 @@ function ResponsiveDrawer(props) {
   );
 }
 
-export default ResponsiveDrawer;
+
+
+const mapStateToProps = state => {
+  return {
+    todos: state
+  }
+}
+
+export default connect(mapStateToProps)(ResponsiveDrawer);
