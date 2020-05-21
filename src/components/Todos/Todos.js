@@ -10,13 +10,16 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
 
+import * as actions from '../../store/actions/index.js';
 import MakeTodo from '../MakeTodo/MakeTodo.js';
 
 const useStyles = makeStyles({
   thead: {
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
 });
 function Todos(props) {
@@ -33,8 +36,16 @@ function Todos(props) {
   const handleCloseButton = (text) => {
     setOpen(false);
     console.log(text);
+    props.onTodoAdd(text);
   }
 
+  const checkboxHandler = (id) => {
+    props.onCheckTodo(id);
+  }
+
+  const deleteTodoHandler = (id) => {
+    props.onDeleteTodo(id)
+  }
   return (
     <Fragment>
         <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: 10}}>
@@ -60,17 +71,25 @@ function Todos(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-                <TableRow>
-                  <TableCell>
-                      <Checkbox
-                          defaultChecked
-                          color="primary"
-                          inputProps={{ 'aria-label': 'secondary checkbox' }}
-                        />
-                  </TableCell>
-                  <TableCell>Text about Todo</TableCell>
-                  <TableCell><DeleteIcon /></TableCell>
-                </TableRow>
+
+                {props.todos.map(todo => (
+                  <TableRow key={`${todo.id}`}>
+                      <TableCell>
+                          <Checkbox
+                              onChange={() => checkboxHandler(todo.id)}
+                              checked={todo.checked}
+                              color="primary"
+                              inputProps={{ 'aria-label': 'secondary checkbox' }}
+                            />
+                      </TableCell>
+                      <TableCell>{todo.text}</TableCell>
+                      <TableCell>
+                         <IconButton onClick={() => deleteTodoHandler(todo.id)}>
+                            <DeleteIcon />
+                         </IconButton>
+                      </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
@@ -78,4 +97,18 @@ function Todos(props) {
   );
 }
 
-export default Todos;
+const mapStateToProps = state => {
+  return {
+    todos: state
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+     onTodoAdd: (text) => dispatch(actions.todoAdded(text)),
+     onCheckTodo: (id) => dispatch(actions.checkboxTodo(id)),
+     onDeleteTodo: (id) => dispatch(actions.deleteTodo(id))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Todos);
