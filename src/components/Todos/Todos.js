@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import Table from '@material-ui/core/Table';
 import Paper from '@material-ui/core/Paper';
 import TableBody from '@material-ui/core/TableBody';
@@ -19,9 +19,9 @@ const useStyles = makeStyles({
     fontWeight: 'bold',
   },
 });
-export default function SimpleTable(styleProp) {
+function Todos(props) {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -77,3 +77,5 @@ export default function SimpleTable(styleProp) {
     </Fragment>
   );
 }
+
+export default Todos;
